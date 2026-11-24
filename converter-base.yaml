@@ -1,0 +1,234 @@
+# Shared Mihomo v3.2 Subconverter base (generated from mihomo-native.yaml).
+# Contains DNS, TUN, Rule Providers, rules. Do not edit this directly.
+# Both converters reconstruct proxy-groups; mihomo.py convert/finalize restores
+# the canonical selector/filter semantics.
+mode: rule
+mixed-port: 7897
+allow-lan: true
+log-level: info
+ipv6: false
+external-controller: 127.0.0.1:9097
+secret: external-controller-secret
+unified-delay: true
+udp: true
+bind-address: '*'
+geodata-mode: true
+geox-url:
+  geoip: https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat
+  geosite: https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat
+  mmdb: https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb
+geo-auto-update: true
+geo-update-interval: 24
+profile:
+  store-selected: true
+  store-fake-ip: true
+sniffer:
+  enable: false
+  parse-pure-ip: true
+  force-domain: [+.netflix.com, +.nflxvideo.net, +.amazonaws.com, +.media.dssott.com]
+  skip-domain: [+.apple.com, Mijia Cloud, dlg.io.mi.com]
+  sniff:
+    TLS:
+      ports: [443, 8443]
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+tun:
+  enable: true
+  stack: mixed
+  dns-hijack: ['any:53', 'tcp://any:53']
+  auto-route: true
+  auto-detect-interface: true
+  strict-route: true
+  dns-mode: hijack
+dns:
+  enable: true
+  use-hosts: true
+  use-system-hosts: true
+  ipv6: false
+  listen: 127.0.0.1:8853
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter-mode: blacklist
+  fake-ip-filter: ['*.lan', '*.localdomain', '*.example', '*.invalid', '*.localhost', '*.test', '*.local', '*.home.arpa', time.*.com, time.*.gov, time.*.edu.cn, time.*.apple.com, time1.*.com, time2.*.com, time3.*.com, time4.*.com, time5.*.com, time6.*.com, time7.*.com, ntp.*.com, ntp1.*.com, ntp2.*.com, ntp3.*.com, ntp4.*.com, ntp5.*.com, ntp6.*.com, ntp7.*.com, '*.time.edu.cn', '*.ntp.org.cn', +.pool.ntp.org, time1.cloud.tencent.com, music.163.com, '*.music.163.com', '*.126.net', musicapi.taihe.com, music.taihe.com, songsearch.kugou.com, trackercdn.kugou.com, '*.kuwo.cn', api-jooxtt.sanook.com, api.joox.com, joox.com, y.qq.com, '*.y.qq.com', streamoc.music.tc.qq.com, mobileoc.music.tc.qq.com, isure.stream.qqmusic.qq.com, dl.stream.qqmusic.qq.com, aqqmusic.tc.qq.com, amobile.music.tc.qq.com, '*.xiami.com', '*.music.migu.cn', music.migu.cn, +.msftconnecttest.com, +.msftncsi.com, msftconnecttest.com, msftncsi.com, localhost.ptlogin2.qq.com, localhost.sec.qq.com, localhost.work.weixin.qq.com, +.srv.nintendo.net, +.stun.playstation.net, xbox.*.microsoft.com, xnotify.xboxlive.com, +.ipv6.microsoft.com, +.battlenet.com.cn, +.wotgame.cn, +.wggames.cn, +.wowsgame.cn, +.wargaming.net, proxy.golang.org, stun.*.*, stun.*.*.*, +.stun.*.*, +.stun.*.*.*, +.stun.*.*.*.*, heartbeat.belkin.com, '*.linksys.com', '*.linksyssmartwifi.com', '*.router.asus.com', mesu.apple.com, swscan.apple.com, swquery.apple.com, swdownload.apple.com, swcdn.apple.com, swdist.apple.com, lens.l.google.com, stun.l.google.com, '*.square-enix.com', '*.finalfantasyxiv.com', '*.ffxiv.com', '*.ff14.sdo.com', ff.dorado.sdo.com, '*.mcdn.bilivideo.cn', +.media.dssott.com, +.pvp.net]
+  default-nameserver: [223.5.5.5, 119.29.29.29]
+  nameserver: ['https://1.1.1.1/dns-query#🚀 PROXY', 'https://8.8.8.8/dns-query#🚀 PROXY']
+  respect-rules: true
+  proxy-server-nameserver: ['https://dns.alidns.com/dns-query#DIRECT', 'https://doh.pub/dns-query#DIRECT']
+  nameserver-policy:
+    +.lan: [system]
+    geosite:private: [system]
+    +.cn: ['https://dns.alidns.com/dns-query#DIRECT', 'https://doh.pub/dns-query#DIRECT']
+    geosite:cn: ['https://dns.alidns.com/dns-query#DIRECT', 'https://doh.pub/dns-query#DIRECT']
+  prefer-h3: false
+rules:
+- RULE-SET,private,DIRECT
+- GEOIP,LAN,DIRECT,no-resolve
+- RULE-SET,lancidr,DIRECT,no-resolve
+- RULE-SET,personal_direct,🎯 国内流量
+- RULE-SET,personal_proxy,🌍 国外流量
+- RULE-SET,applications,DIRECT
+- RULE-SET,reject,🛑 广告拦截
+- RULE-SET,game_download,🎯 国内流量
+- RULE-SET,steam_cn,🎯 国内流量
+- RULE-SET,openai,🤖 AI 服务,no-resolve
+- RULE-SET,gemini,🤖 AI 服务
+- DOMAIN-SUFFIX,maven.apache.org,🌐 国外可直连
+- DOMAIN-SUFFIX,maven.org,🌐 国外可直连
+- DOMAIN-SUFFIX,gradle.org,🌐 国外可直连
+- RULE-SET,google_direct,🌐 国外可直连
+- RULE-SET,microsoft,🌐 国外可直连
+- RULE-SET,apple,🍎 苹果服务
+- RULE-SET,icloud,🍎 苹果服务
+- DOMAIN,clash.razord.top,DIRECT
+- DOMAIN,yacd.haishan.me,DIRECT
+- RULE-SET,github,🌍 国外流量
+- RULE-SET,docker,🌍 国外流量
+- RULE-SET,google,🌍 国外流量,no-resolve
+- RULE-SET,game,🎮 游戏平台,no-resolve
+- RULE-SET,direct,🎯 国内流量
+- RULE-SET,gfw,🌍 国外流量
+- GEOIP,CN,🎯 国内流量,no-resolve
+- RULE-SET,telegram_cidr,🌍 国外流量,no-resolve
+- RULE-SET,proxy_lite,🌐 宽泛PROXY,no-resolve
+- RULE-SET,proxy,🌐 宽泛PROXY
+- MATCH,🐟 漏网之鱼
+rule-providers:
+  private:
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/private.txt
+    path: ./rule_providers/private.yaml
+    interval: 86400
+  lancidr:
+    type: http
+    behavior: ipcidr
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt
+    path: ./rule_providers/lancidr.yaml
+    interval: 86400
+  applications:
+    type: http
+    behavior: classical
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/applications.txt
+    path: ./rule_providers/applications.yaml
+    interval: 86400
+  reject:
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt
+    path: ./rule_providers/reject.yaml
+    interval: 86400
+  icloud:
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt
+    path: ./rule_providers/icloud.yaml
+    interval: 86400
+  apple:
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt
+    path: ./rule_providers/apple.yaml
+    interval: 86400
+  google_direct:
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/google.txt
+    path: ./rule_providers/google_direct.yaml
+    interval: 86400
+  direct:
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/direct.txt
+    path: ./rule_providers/direct.yaml
+    interval: 86400
+  gfw:
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt
+    path: ./rule_providers/gfw.yaml
+    interval: 86400
+  telegram_cidr:
+    type: http
+    behavior: ipcidr
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/telegramcidr.txt
+    path: ./rule_providers/telegram_cidr.yaml
+    interval: 86400
+  proxy:
+    type: http
+    behavior: domain
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/proxy.txt
+    path: ./rule_providers/proxy.yaml
+    interval: 86400
+  openai:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml
+    path: ./rule_providers/openai.yaml
+    interval: 86400
+  gemini:
+    type: http
+    behavior: classical
+    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Gemini/Gemini.yaml
+    path: ./rule_providers/gemini.yaml
+    interval: 86400
+  docker:
+    type: http
+    behavior: classical
+    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Docker/Docker.yaml
+    path: ./rule_providers/docker.yaml
+    interval: 86400
+  game:
+    type: http
+    behavior: classical
+    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Game/Game.yaml
+    path: ./rule_providers/game.yaml
+    interval: 86400
+  microsoft:
+    type: http
+    behavior: classical
+    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Microsoft/Microsoft.yaml
+    path: ./rule_providers/microsoft.yaml
+    interval: 86400
+  google:
+    type: http
+    behavior: classical
+    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Google/Google.yaml
+    path: ./rule_providers/google.yaml
+    interval: 86400
+  github:
+    type: http
+    behavior: classical
+    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GitHub/GitHub.yaml
+    path: ./rule_providers/github.yaml
+    interval: 86400
+  personal_direct:
+    type: http
+    behavior: classical
+    url: https://gist.githubusercontent.com/Forgo7ten/6b75fc9d9394c00bf2d5faaae3f4909b/raw/my_rule_direct.yaml
+    path: ./rule_providers/personal_direct.yaml
+    interval: 86400
+  personal_proxy:
+    type: http
+    behavior: classical
+    url: https://gist.githubusercontent.com/Forgo7ten/6b75fc9d9394c00bf2d5faaae3f4909b/raw/my_rule_proxy.yaml
+    path: ./rule_providers/personal_proxy.yaml
+    interval: 86400
+  game_download:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Game/GameDownload/GameDownload.yaml
+    path: ./rule_providers/game_download.yaml
+    interval: 86400
+  steam_cn:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/SteamCN/SteamCN.yaml
+    path: ./rule_providers/steam_cn.yaml
+    interval: 86400
+  proxy_lite:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ProxyLite/ProxyLite.yaml
+    path: ./rule_providers/proxy_lite.yaml
+    interval: 86400
