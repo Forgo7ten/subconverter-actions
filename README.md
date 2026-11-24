@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> Mihomo 已支持 `proxy-providers`。需要使用该功能，请前往 [Mihomo 配置分支](https://github.com/Forgo7ten/subconverter-actions/tree/mohomo)。
+
 # subconverter-actions
 
 利用GithubActions将自己的订阅通过[subconverter](https://github.com/tindy2013/subconverter)转换工具转换，并上传至特定的gist。
@@ -50,4 +53,4 @@
 
 ## 其他
 
-推荐个[便宜大碗的t](https://pp.hnekoo.top/#/register?code=i8x7SbRK)，包年15r、或不限时1TB25r，还日常打8折，用Hysteria2协议速度杠杠的。
+推荐个[便宜大碗的t](https://goflybit.com/register?code=GHqArOrM)。
